@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Environment Variables
+        run: |
+          echo "VITE_GAS_API_URL=${{ secrets.VITE_GAS_API_URL }}" >> .env
+          echo "VITE_NEWS_CATEGORY=${{ vars.VITE_NEWS_CATEGORY || '科技' }}" >> .env
+          echo "VITE_REFRESH_INTERVAL=${{ vars.VITE_REFRESH_INTERVAL || '60000' }}" >> .env
+
+      - name: Build
+        # 在 GitHub Actions 中動態取得儲存庫名稱並替換 base 路徑
+        run: |
+          npx tsc -b
+          npx vite build --base=/${{ github.event.repository.name }}/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
