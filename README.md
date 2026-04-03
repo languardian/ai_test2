@@ -178,9 +178,10 @@ VITE_REFRESH_INTERVAL=60000
 本專案已內建 `.github/workflows/deploy.yml` 的 GitHub Actions 自動化腳本。當您將原始碼推送到 GitHub 上的 `main` 或 `master` 分支時，它會安全地替您編譯並發布為網站，而不需要把機密的 GAS URL 寫死在程式碼中。
 
 ### 實際部署流程：
-1. **前往設定**：在您的 GitHub 儲存庫頁面，點選上方的 **Settings (設定)**。
-2. **開啟 GitHub Pages**：在左側導覽列點選 **Pages**，將 **Source** 選項切換為 **GitHub Actions**。
-3. **安全注入環境變數**：在左側導覽列找到 **Secrets and variables -> Actions**。
+1. **首推程式碼（很重要）**：請確保您已經將專案的程式碼至少推送一次 (git push) 到您的 GitHub 儲存庫。（若儲存庫完全是空的，接下來的 Build and deployment 選項會被隱藏無法設定）。
+2. **前往設定**：確認推播完成後，在該儲存庫上方點選 **Settings (設定)**。
+3. **開啟 GitHub Pages**：在左側導覽列點選 **Pages**，找到 **Build and deployment** 區塊，將 **Source** 選項由 `Deploy from a branch` 切換為 **GitHub Actions**。
+4. **安全注入環境變數**：在左側導覽列找到 **Secrets and variables -> Actions**。
    
    👉 **新增 Secrets (用來存放機密網址)**
    - 點選 `New repository secret` 按鈕
@@ -192,4 +193,4 @@ VITE_REFRESH_INTERVAL=60000
    - 可新增 `VITE_NEWS_CATEGORY` (值可填：`科技`、`金融` 等)
    - 可新增 `VITE_REFRESH_INTERVAL` (值可填：`60000` 代表60秒自動回抓)
 
-4. **觸發上線**：環境變數設定好後，回到儲存庫的 **Actions** 頁籤當中手動執行一次 `Deploy to GitHub Pages` 工作流（或您再次 Push 一行程式碼），等待出現綠色勾勾後，GitHub 就會自動把打包好的高質感儀表板呈現上線了！
+5. **觸發上線**：環境變數設定好後，回到儲存庫的 **Actions** 頁籤當中手動執行一次 `Deploy to GitHub Pages` 工作流（或您再次對專案 Push 一個小更動），系統即會自動將高質感儀表板呈現上線！
