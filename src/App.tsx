@@ -13,7 +13,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState<"home" | "saved">("home");
 
   // 首頁即時新聞
-  const { data: homeNews = [], isLoading: isLoadingHome, isError: isErrorHome, isFetching: isFetchingHome } = useQuery({
+  const { data: homeNews = [], isLoading: isLoadingHome, isError: isErrorHome } = useQuery({
     queryKey: ["newsList", activeCategory],
     queryFn: () => ApiService.fetchNews(activeCategory),
     refetchInterval: Number(import.meta.env.VITE_REFRESH_INTERVAL) || 60000,
