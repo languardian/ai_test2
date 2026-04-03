@@ -47,6 +47,12 @@ export default function App() {
     if (userId.trim()) setIsLoggedIn(true);
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserId("");
+    setCurrentView("home");
+  };
+
   const handleAction = (news: NewsItem, type: "share" | "save" | "unsave" | "read") => {
     actionMutation.mutate({ news, type });
   };
@@ -128,7 +134,10 @@ export default function App() {
         )}
         
         <div style={{flexGrow: 1}}></div>
-        <div className="user-id">ID: {userId}</div>
+        <div className="user-info">
+          <span className="user-id">ID: {userId}</span>
+          <button className="btn-logout" onClick={handleLogout}>登出 🚪</button>
+        </div>
       </header>
 
       <main className="news-grid">
